@@ -45,7 +45,7 @@ int count_char_x(const char *str, char x) {
 }
 
 TEST_F(GTest, pointer_char_special_value_gtest){
-	EXPECT_FALSE(nullptr);
+	EXPECT_FALSE(static_cast<bool>(nullptr));
 	EXPECT_FALSE(0);
 	EXPECT_FALSE('\0');
 	EXPECT_EQ(count_char_x("xxx  yy\r\n  yzzz",'x'), 3);
@@ -55,7 +55,7 @@ void wait_input(void) {
 	while(1) {
 		cout << "input direction" <<endl;
 		cin >> direction;
-		printf("direction:%s, size:%d \n",direction.c_str(), direction.size());
+		printf("direction:%s, size:%lu \n",direction.c_str(), direction.size());
 		switch(direction[0]) {
 			case 'p':
 				printf("UP\n");
@@ -76,7 +76,7 @@ void wait_input(void) {
 }
 TEST_F(GTest, cin_input_value_gtest){
 	string dir{"p"};
-	EXPECT_EQ(dir.size(), 2);
+	EXPECT_EQ(dir.size(), 1);
 	wait_input();
 }
 
@@ -122,7 +122,8 @@ TEST_F(GTest, basic_type_init_gtest){
 
 	/* 为了兼容 c ，= 赋值操作不会产生 narrowing conversion 的warning，而是做了隐式的转换 */
 	/* warning: narrowing conversion of ‘7.2000000000000002e+0’ from ‘double’ to ‘int’ inside { } [-Wnarrowing] */
-	int i2{7.2}; // this will get compile warning for information missing when instantiate
+//	int i2 = {7.2}; // this will get compile warning for information missing when instantiate
+	int i2 = 7.2;
 	EXPECT_EQ(i, 7);
 	EXPECT_EQ(i2, 7);
 
@@ -261,7 +262,7 @@ TEST_F(GTest, array_gtest) {
 	const int size = 3;
 
 	int d2Array[][size]{{1,2,3},{4,5,6},{7,8,9}};
-	int ddArray[][size]{1,2,3,4,5,6,7,8,9};
+//	int ddArray[][size]{1,2,3,4,5,6,7,8,9};
 	EXPECT_EQ(sizeof(d2Array[0]), size*sizeof(d2Array[0][0]));
 
 

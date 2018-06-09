@@ -2,17 +2,17 @@ set(CMAKE_CXX_FLAGS "-Wall -std=gnu++11 -g -O0 -pthread")
 set(googleTestDir ../../googletest)
 include_directories(${googleTestDir}/googletest/include)
 
-set(test_what class)
+set(test_what exception)
 
-set(SOURCE class.cpp)
+set(SOURCE exception.cpp)
 
 add_executable(
-	class
+	exception
 	${SOURCE}
 )
 
 target_link_libraries(
-	class
+	exception
 	gtest
 )
 

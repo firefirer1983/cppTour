@@ -34,52 +34,6 @@ TEST_F(GTest, basic_type_length_gtest){
 }
 
 
-int count_char_x(const char *str, char x) {
-	int cnt = 0;
-	while(str&&*str) {
-		if(*str == x)
-			++cnt;
-		++str;
-	}
-	return cnt;
-}
-
-TEST_F(GTest, pointer_char_special_value_gtest){
-	EXPECT_FALSE(static_cast<bool>(nullptr));
-	EXPECT_FALSE(0);
-	EXPECT_FALSE('\0');
-	EXPECT_EQ(count_char_x("xxx  yy\r\n  yzzz",'x'), 3);
-}
-void wait_input(void) {
-	string direction;
-	while(1) {
-		cout << "input direction" <<endl;
-		cin >> direction;
-		printf("direction:%s, size:%lu \n",direction.c_str(), direction.size());
-		switch(direction[0]) {
-			case 'p':
-				printf("UP\n");
-				break;
-			case 'n':
-				printf("DOWN\n");
-				break;
-			case 'f':
-				printf("RIGHT\n");
-				break;
-			case 'b':
-				printf("LEFT\n");
-				break;
-			case 'q':
-				return ;
-		}
-	}
-}
-TEST_F(GTest, cin_input_value_gtest){
-	string dir{"p"};
-	EXPECT_EQ(dir.size(), 1);
-	wait_input();
-}
-
 TEST_F(GTest, basic_type_operation_gtest){
 	EXPECT_EQ(7%2, 1); // 7 - 2*(int)(7/2） = 7 - 2*(3) = 7 - 2*3 = 1;
 	EXPECT_EQ((-7)%2, -1);// -7 - 2*(int)(-7/2) => -7 - 2 * int(-3) => -7 + 6 = -1;
@@ -132,25 +86,6 @@ TEST_F(GTest, basic_type_init_gtest){
 	i = f;
 	EXPECT_EQ(i, 7);
 
-}
-
-TEST_F(GTest, basic_type_unsigned_2_signed_error_gtest) {
-
-//	char: -(2^7) ~ (2^7)-1 => -128 ~ 128-1 => -128 ~ 127
-//	unsigned char: 0 ~ (2^8)-1 => 0 ~ 256-1 => 0 ~ 255
-//
-//	int: -(2^31) ~ (2^31)-1 => -2147483648 ~ 2147483648-1 => -2147483648 ~ 2147483647
-//	unsigned: 0 ~ 2^32-1 => 0 ~ 4294967296-1 => 0 ~ 4294967295
-
-	unsigned char uc = pow(2,7) + 1;// 128 + 1 = 129
-	char c = uc;
-	EXPECT_NE(c, 129);
-	EXPECT_EQ(c, -127);
-
-	unsigned ui = pow(2,31) + 1; // 2147483648 + 1 = 2147483649
-	int i = ui;
-	EXPECT_NE(i, 2147483649);
-	EXPECT_EQ(i, -2147483647);
 }
 
 namespace std {
@@ -230,45 +165,6 @@ TEST_F(GTest, const_constexpr_gtest) {
 
 	EXPECT_EQ(constant, 5);
 	EXPECT_EQ(constant_expr, 25);
-}
-
-template<int N>
-int startWith(const string &str, const char (&prefix)[N]) {
-	return str.size() >= N-1&&equal(prefix, prefix+N-1, str.begin());
-}
-
-template<typename T,int N>
-void print_array(const T (&ary)[N]) {
-	for(const auto &x:ary)
-		cout << x << " ";
-	printf("\n");
-}
-
-TEST_F(GTest, array_gtest) {
-	char charArray[]{"hello world!"};
-	int intArray[]{1,2,3,4,5};
-
-	print_array(charArray);
-	print_array(intArray);
-
-	EXPECT_EQ(*charArray, charArray[0]);
-	EXPECT_EQ(charArray, &charArray[0]);
-
-	printf("%p\n", intArray);
-	unsigned long int array_begin = reinterpret_cast<unsigned long int>(intArray);
-	unsigned long int array_end = reinterpret_cast<unsigned long int>(&intArray+1);
-	EXPECT_EQ((array_end-array_begin), sizeof(intArray));
-
-	const int size = 3;
-
-	int d2Array[][size]{{1,2,3},{4,5,6},{7,8,9}};
-//	int ddArray[][size]{1,2,3,4,5,6,7,8,9};
-	EXPECT_EQ(sizeof(d2Array[0]), size*sizeof(d2Array[0][0]));
-
-
-	unsigned long int array2d_begin = reinterpret_cast<unsigned long int>(d2Array[0]);
-	unsigned long int array2d_end = reinterpret_cast<unsigned long int>(&d2Array[0]+1);
-	EXPECT_EQ((array2d_end-array2d_begin), size*sizeof(d2Array[0][0]));
 }
 
 int main(int argc, char *argv[]) {
